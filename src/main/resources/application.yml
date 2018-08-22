@@ -1,0 +1,12 @@
+spring:
+#  profiles:
+#    active : dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: Cookie!2018
+    url: jdbc:mysql://47.97.110.73:3306/cookie?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    driverClassName: com.mysql.cj.jdbc.Driver
+
+server:
+  port: 8080
