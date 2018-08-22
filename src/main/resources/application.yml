@@ -1,12 +1,22 @@
 spring:
-#  profiles:
-#    active : dev
+  profiles:
+    active : dev
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
     password: Cookie!2018
-    url: jdbc:mysql://47.97.110.73:3306/cookie?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://47.97.110.73:3306/cookie?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
     driverClassName: com.mysql.cj.jdbc.Driver
 
-server:
-  port: 8080
+#server:
+#  port: 8080
+
+logging:
+  file: ./logs/run.log
+  level:
+    root: info
+    org.hibernate: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+    com.itmuch.youran.persistence: ERROR
+
