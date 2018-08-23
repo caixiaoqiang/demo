@@ -1,6 +1,8 @@
 package com.cookie.dao;
 
+
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,229 +21,178 @@ public class DBHelper {
     private DBHelper() {
     }
 
-    public static int execute(Connection conn, String sql) throws SQLException {
-        return execute(conn, sql, (String[])null);
+    public static int excute(Connection conn , String sql ) throws SQLException {
+        return  excute(conn,sql,null);
     }
 
-    public static int execute(Connection conn, String sql, String[] params) throws SQLException {
-        PreparedStatement stat = null;
-        logger.debug("execute,sql=" + sql);
-        stat = conn.prepareStatement(sql);
-        if (params != null) {
-            int index = 1;
-            String[] var5 = params;
-            int var6 = params.length;
+    public static int queryForInt(Connection conn , String sql ) throws SQLException {
+        return  queryForInt(conn,sql,null);
+    }
 
-            for(int var7 = 0; var7 < var6; ++var7) {
-                String param = var5[var7];
-                stat.setString(index++, param);
+    public static String queryForString(Connection conn , String sql ) throws SQLException {
+        return  queryForString(conn,sql,null);
+    }
+
+    public static Long queryForLong(Connection conn , String sql ) throws SQLException {
+        return  queryForLong(conn,sql,null);
+    }
+    public static Map<String,String> queryForMap(Connection conn , String sql ) throws SQLException {
+        List<Map<String,String>> datas =   query(conn,sql,null);
+        return  datas.size() > 0 ? datas.get(0) : null ;
+    }
+
+    public static Map<String,String> queryForMap(Connection conn , String sql , String [] params ) throws SQLException {
+        List<Map<String,String>> datas =   query(conn,sql,params);
+        return  datas.size() > 0 ? datas.get(0) : null ;
+    }
+
+    public static List<Map<String,String>> query(Connection conn , String sql  ) throws SQLException {
+        return  query(conn,sql,null);
+    }
+
+    public static int excute(Connection conn , String sql , String [] params ) throws SQLException {
+        logger.info("sql = "+sql);
+        PreparedStatement ps = conn.prepareStatement(sql);
+        if (params!= null && params.length > 0 ){
+            for (int i = 0 ; i < params.length ; i++ ){
+                ps.setString(i+1,params[i]);
             }
         }
+        return  ps.executeUpdate();
 
-        return stat.executeUpdate();
     }
 
-    public static int queryForInt(Connection conn, String sql) throws SQLException {
-        return queryForInt(conn, sql, (String[])null);
-    }
-
-    public static int queryForInt(Connection conn, String sql, String[] params) throws SQLException {
-        ResultSet rs = null;
-        PreparedStatement stat = null;
-
+    public static int queryForInt(Connection conn , String sql , String [] params ) throws SQLException {
+        logger.info("sql = "+sql);
+        PreparedStatement ps  = null ;
+        ResultSet set = null ;
         try {
-            logger.debug("query,sql=" + sql);
-            stat = conn.prepareStatement(sql);
-            int index;
-            if (params != null) {
-                index = 1;
-                String[] var6 = params;
-                int var7 = params.length;
 
-                for(int var8 = 0; var8 < var7; ++var8) {
-                    String param = var6[var8];
-                    stat.setString(index++, param);
+            ps = conn.prepareStatement(sql);
+            if (params!= null && params.length > 0 ){
+                for (int i = 0 ; i < params.length ; i++ ){
+                    ps.setString(i+1,params[i]);
                 }
             }
-
-            rs = stat.executeQuery();
-            if (rs.next()) {
-                index = rs.getInt(1);
-                return index;
+            set = ps.executeQuery();
+            while (set.next()){
+                return set.getInt(1);
             }
-        } finally {
-            if (stat != null) {
-                stat.close();
-            }
-
-            if (rs != null) {
-                rs.close();
-            }
-
+        }finally {
+            close(ps,set);
         }
+        return  -1 ;
 
-        return -1;
     }
 
-    public static String queryForString(Connection conn, String sql, String[] params) throws SQLException {
-        ResultSet rs = null;
-        PreparedStatement stat = null;
-
+    public static String queryForString(Connection conn , String sql , String [] params ) throws SQLException {
+        logger.info("sql = "+sql);
+        PreparedStatement ps  = null ;
+        ResultSet set = null ;
         try {
-            logger.debug("query,sql=" + sql);
-            stat = conn.prepareStatement(sql);
-            if (params != null) {
-                int index = 1;
-                String[] var6 = params;
-                int var7 = params.length;
 
-                for(int var8 = 0; var8 < var7; ++var8) {
-                    String param = var6[var8];
-                    stat.setString(index++, param);
+            ps = conn.prepareStatement(sql);
+            if (params!= null && params.length > 0 ){
+                for (int i = 0 ; i < params.length ; i++ ){
+                    ps.setString(i+1,params[i]);
                 }
             }
-
-            rs = stat.executeQuery();
-            if (rs.next()) {
-                String var13 = rs.getString(1);
-                return var13;
+            set = ps.executeQuery();
+            while (set.next()){
+                return set.getString(1);
             }
-        } finally {
-            if (stat != null) {
-                stat.close();
-            }
-
-            if (rs != null) {
-                rs.close();
-            }
-
+        }finally {
+            close(ps,set);
         }
+        return  null ;
 
-        return null;
     }
 
-    public static long queryForLong(Connection conn, String sql, String[] params) throws SQLException {
-        ResultSet rs = null;
-        PreparedStatement stat = null;
-
+    public static Long queryForLong(Connection conn , String sql , String [] params ) throws SQLException {
+        logger.info("sql = "+sql);
+        PreparedStatement ps  = null ;
+        ResultSet set = null ;
         try {
-            logger.debug("query,sql=" + sql);
-            stat = conn.prepareStatement(sql);
-            if (params != null) {
-                int index = 1;
-                String[] var6 = params;
-                int var7 = params.length;
 
-                for(int var8 = 0; var8 < var7; ++var8) {
-                    String param = var6[var8];
-                    stat.setString(index++, param);
+            ps = conn.prepareStatement(sql);
+            if (params!= null && params.length > 0 ){
+                for (int i = 0 ; i < params.length ; i++ ){
+                    ps.setString(i+1,params[i]);
                 }
             }
-
-            rs = stat.executeQuery();
-            if (rs.next()) {
-                long var13 = rs.getLong(1);
-                return var13;
+            set = ps.executeQuery();
+            while (set.next()){
+                return set.getLong(1);
             }
-        } finally {
-            if (stat != null) {
-                stat.close();
-            }
-
-            if (rs != null) {
-                rs.close();
-            }
-
+        }finally {
+            close(ps,set);
         }
+        return  null ;
 
-        return -1L;
     }
 
-    public static Map<String, String> queryForMap(Connection conn, String sql) throws SQLException {
-        return queryForMap(conn, sql, (String[])null);
-    }
 
-    public static Map<String, String> queryForMap(Connection conn, String sql, String[] params) throws SQLException {
-        List<Map<String, String>> list = query(conn, sql, params);
-        return list.size() > 0 ? (Map)list.get(0) : null;
-    }
-
-    public static List<Map<String, String>> query(Connection conn, String sql) throws SQLException {
-        return query(conn, sql, (String[])null);
-    }
-
-    public static List<Map<String, String>> query(Connection conn, String sql, String[] params) throws SQLException {
-        List<Map<String, String>> datas = new ArrayList();
-        ResultSet rs = null;
-        PreparedStatement stat = null;
-
+    public static List<Map<String,String>> query(Connection conn , String sql , String [] params ) throws SQLException {
+        logger.info("sql = "+sql);
+        List<Map<String,String>> datas = new ArrayList<>();
+        PreparedStatement ps  = null ;
+        ResultSet set = null ;
         try {
-            logger.debug("query,sql=" + sql);
-            stat = conn.prepareStatement(sql);
-            int i;
-            if (params != null) {
-                int index = 1;
-                String[] var7 = params;
-                int var8 = params.length;
 
-                for(i = 0; i < var8; ++i) {
-                    String param = var7[i];
-                    stat.setString(index++, param);
+            ps = conn.prepareStatement(sql);
+            if (params!= null && params.length > 0 ){
+                for (int i = 0 ; i < params.length ; i++ ){
+                    ps.setString(i+1,params[i]);
                 }
             }
-
-            rs = stat.executeQuery();
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-
-            while(rs.next()) {
-                Map<String, String> data = new HashMap();
-
-                for(i = 1; i <= columnCount; ++i) {
-                    if (rs.getString(i) != null) {
-                        data.put(metaData.getColumnLabel(i), rs.getString(i));
+            set = ps.executeQuery();
+            ResultSetMetaData metaData = set.getMetaData();
+            int cloumnCount = metaData.getColumnCount();
+            while (set.next()){
+                Map<String,String> map = new HashMap<>();
+                for (int i = 1 ; i <= cloumnCount+1 ; i++ ){
+                    if (StringUtils.isEmpty(set.getString(i))){
+                        map.put(metaData.getColumnLabel(i),set.getString(i));
                     }
                 }
-
-                datas.add(data);
+                datas.add(map);
             }
-        } finally {
-            if (stat != null) {
-                stat.close();
-            }
-
-            if (rs != null) {
-                rs.close();
-            }
-
+        }finally {
+            close(ps,set);
         }
-
-        return datas;
+        return  datas ;
     }
 
-    private static ResultSet getResultSet(Connection conn, String sql, String[] params) throws SQLException {
-        PreparedStatement stat = null;
-
-        ResultSet var12;
+    public static ResultSet getResultSet(Connection conn , String sql , String [] params ) throws SQLException {
+        logger.info("sql = "+sql);
+        PreparedStatement ps  = null ;
+        ResultSet set = null ;
         try {
-            logger.debug("query,sql=" + sql);
-            stat = conn.prepareStatement(sql);
-            if (params != null) {
-                int index = 1;
-                String[] var5 = params;
-                int var6 = params.length;
 
-                for(int var7 = 0; var7 < var6; ++var7) {
-                    String param = var5[var7];
-                    stat.setString(index++, param);
+            ps = conn.prepareStatement(sql);
+            if (params!= null && params.length > 0 ){
+                for (int i = 0 ; i < params.length ; i++ ){
+                    ps.setString(i+1,params[i]);
                 }
             }
-
-            var12 = stat.executeQuery();
-        } finally {
-            stat.close();
+            set =   ps.executeQuery();
+        }finally {
+            ps.close();
         }
 
-        return var12;
+        return set ;
     }
+
+
+    public static void close(PreparedStatement ps , ResultSet set ) throws SQLException {
+        if (ps != null ){
+            ps.close();
+        }
+        if (set != null ){
+            set.close();
+        }
+    }
+
+
+
 }
