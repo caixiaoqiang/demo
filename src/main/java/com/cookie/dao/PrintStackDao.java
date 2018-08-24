@@ -1,7 +1,8 @@
 package com.cookie.dao;
 
 import com.cookie.tool.IDBPool;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author cxq
@@ -9,7 +10,7 @@ import org.apache.log4j.Logger;
  */
 public abstract  class PrintStackDao {
 
-    private static final Logger logger = Logger.getLogger(PrintStackDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(PrintStackDao.class);
     protected IDBPool pool = null;
 
     public PrintStackDao() {

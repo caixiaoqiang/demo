@@ -1,7 +1,8 @@
 package com.cookie.dao;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.sql.*;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public class DBHelper {
 
-    private static final Logger logger = Logger.getLogger(DBHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(DBHelper.class);
 
     private DBHelper() {
     }

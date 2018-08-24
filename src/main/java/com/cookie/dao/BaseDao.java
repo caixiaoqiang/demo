@@ -1,11 +1,11 @@
 package com.cookie.dao;
 
 import com.cookie.tool.IDBPool;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  * @date 2018/8/22 15:39
  */
 public class BaseDao extends PrintStackDao {
-    private static final Logger logger = Logger.getLogger(BaseDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(BaseDao.class);
 
     public BaseDao() {
     }
@@ -63,7 +63,7 @@ public class BaseDao extends PrintStackDao {
             return DBHelper.queryForInt(conn,sql,params);
         } catch (SQLException e) {
             logger.error("queryForInt 错误 : "+e.getLocalizedMessage());
-            e.printStackTrace();
+            this.printCallStack(e, sql, params);
         }finally {
             close(conn);
         }
@@ -81,7 +81,7 @@ public class BaseDao extends PrintStackDao {
             return DBHelper.queryForLong(conn,sql,params);
         } catch (SQLException e) {
             logger.error("queryForLong 错误 : "+e.getLocalizedMessage());
-            e.printStackTrace();
+            this.printCallStack(e, sql, params);
         }finally {
             close(conn);
         }
@@ -99,7 +99,7 @@ public class BaseDao extends PrintStackDao {
             return DBHelper.queryForString(conn,sql,params);
         } catch (SQLException e) {
             logger.error("queryForString 错误 : "+e.getLocalizedMessage());
-            e.printStackTrace();
+            this.printCallStack(e, sql, params);
         }finally {
             close(conn);
         }
@@ -117,7 +117,7 @@ public class BaseDao extends PrintStackDao {
             return DBHelper.queryForMap(conn,sql,params);
         } catch (SQLException e) {
             logger.error("rawQueryForMap 错误 : "+e.getLocalizedMessage());
-            e.printStackTrace();
+            this.printCallStack(e, sql, params);
         }finally {
             close(conn);
         }
@@ -136,7 +136,7 @@ public class BaseDao extends PrintStackDao {
             return DBHelper.query(conn,sql,params);
         } catch (SQLException e) {
             logger.error("rawQuery 错误 : "+e.getLocalizedMessage());
-            e.printStackTrace();
+            this.printCallStack(e, sql, params);
         }finally {
             close(conn);
         }
