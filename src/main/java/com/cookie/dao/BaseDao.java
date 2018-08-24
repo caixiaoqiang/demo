@@ -31,10 +31,21 @@ public class BaseDao extends PrintStackDao {
         return this.pool;
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @return  返回影响的行数
+     */
     public int execute(String sql) {
         return this.execute(sql, (String[])null);
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @param params
+     * @return  返回影响的行数
+     */
     public int execute(String sql, String[] params) {
         Connection conn = null;
 
@@ -52,10 +63,35 @@ public class BaseDao extends PrintStackDao {
         return -1;
     }
 
+    /**
+     * 事务执行一条sql
+     * @param conn
+     * @param sql
+     * @param params
+     * @return  返回影响行数
+     * @throws SQLException
+     */
+    public int execute(Connection conn , String sql, String[] params) throws SQLException {
+        int var4 = DBHelper.excute(conn, sql, params);
+        return var4;
+
+    }
+
+    /**
+     * 执行一条sql
+     * @param sql
+     * @return  如果没有，返回-1
+     */
     public int rawQueryForInt(String sql ){
         return  rawQueryForInt(sql,null);
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @param params
+     * @return 如果没有，返回-1
+     */
     public int rawQueryForInt(String sql , String [] params ){
         Connection conn = null ;
         try {
@@ -70,10 +106,21 @@ public class BaseDao extends PrintStackDao {
         return  -1 ;
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @return 如果没有，返回-1L
+     */
     public long rawQueryForLong(String sql ){
         return  rawQueryForLong(sql,null);
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @param params
+     * @return  如果没有，返回-1L
+     */
     public long rawQueryForLong(String sql , String [] params ){
         Connection conn = null ;
         try {
@@ -88,10 +135,21 @@ public class BaseDao extends PrintStackDao {
         return  -1L ;
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @return  如果没有，返回null
+     */
     public String rawQueryForString(String sql ){
         return  rawQueryForString(sql,null);
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @param params
+     * @return  如果没有，返回null
+     */
     public String rawQueryForString(String sql , String [] params ){
         Connection conn = null ;
         try {
@@ -106,10 +164,21 @@ public class BaseDao extends PrintStackDao {
         return  null ;
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @return  如果没有，返回null
+     */
     public Map<String,String> rawQueryForMap(String sql ){
         return rawQueryForMap(sql,null);
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @param params
+     * @return  如果没有，返回null
+     */
     public Map<String,String> rawQueryForMap(String sql , String [] params ){
         Connection conn = null ;
         try {
@@ -124,11 +193,21 @@ public class BaseDao extends PrintStackDao {
         return  null ;
     }
 
-
+    /**
+     * 执行一条sql
+     * @param sql
+     * @return  如果没有，返回null
+     */
     public List<Map<String,String>> rawQuery(String sql ){
         return rawQuery(sql,null);
     }
 
+    /**
+     * 执行一条sql
+     * @param sql
+     * @param params
+     * @return  如果没有，返回null
+     */
     public List<Map<String,String>> rawQuery(String sql , String [] params ){
         Connection conn = null ;
         try {
