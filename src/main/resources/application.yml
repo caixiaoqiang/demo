@@ -4,15 +4,15 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
-    password: Cookie!2018
-    url: jdbc:mysql://47.97.110.73:3306/cookie?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    password: Root@123
+    url: jdbc:mysql://114.55.127.198:82/cookie?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
     driverClassName: com.mysql.cj.jdbc.Driver
 
 #server:
 #  port: 8080
 
 logging:
-  file: ./logs/run.log
+#  file: ./logs/run.log
   level:
     root: info
     org.hibernate: INFO
